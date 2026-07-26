@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --white: #FFFFFF;
+  --rose-gold: #B76E79;
+  --rose-gold-light: #D9A5AC;
+  --beige: #F8F5F2;
+  --ink: #111111;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--white);
+  color: var(--ink);
+  font-family: 'Manrope', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.01em;
+}
+
+/* Custom thin scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--beige); }
+::-webkit-scrollbar-thumb { background: var(--rose-gold); border-radius: 8px; }
+
+/* Visible keyboard focus */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--rose-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Eyebrow / label utility */
+.eyebrow {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.68rem;
+  color: var(--rose-gold);
+}
+
+/* Signature: Facet glint sweep — used on hero title, buttons, product cards */
+.glint {
+  position: relative;
+  overflow: hidden;
+}
+.glint::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -150%;
+  width: 60%; height: 100%;
+  background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.55) 50%, transparent 80%);
+  transform: skewX(-18deg);
+  transition: left 0.9s cubic-bezier(0.65,0,0.35,1);
+  pointer-events: none;
+}
+.glint:hover::after {
+  left: 150%;
+}
+
+/* Diagonal facet clip reveal, used for hero + section headings on load */
+.facet-reveal {
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  animation: facetIn 1.15s cubic-bezier(0.65,0,0.35,1) forwards;
+}
+@keyframes facetIn {
+  to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+}
+
+/* Shimmer skeleton for loading */
+.shimmer-bg {
+  background: linear-gradient(90deg, var(--beige) 25%, #efe8e2 37%, var(--beige) 63%);
+  background-size: 400% 100%;
+  animation: shimmerMove 1.6s ease infinite;
+}
+@keyframes shimmerMove {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+.container-x {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
