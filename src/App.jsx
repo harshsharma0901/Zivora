@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import Loader from './components/Loader.jsx'
@@ -9,7 +8,7 @@ import WhatsAppButton from './components/WhatsAppButton.jsx'
 import CartDrawer from './components/CartDrawer.jsx'
 import WishlistDrawer from './components/WishlistDrawer.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
-
+import ProtectedRoute from './components/admin/ProtectedRoute.jsx'
 import Home from './pages/Home.jsx'
 import Shop from './pages/Shop.jsx'
 import Collections from './pages/Collections.jsx'
@@ -19,26 +18,48 @@ import Contact from './pages/Contact.jsx'
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx'
 import ReturnPolicy from './pages/ReturnPolicy.jsx'
 import ShippingPolicy from './pages/ShippingPolicy.jsx'
+import TermsConditions from './pages/TermsConditions.jsx'
 import NotFound from './pages/NotFound.jsx'
+import AdminLogin from './pages/admin/AdminLogin.jsx'
+import AdminDashboard from './pages/admin/AdminDashboard.jsx'
+import AdminProductForm from './pages/admin/AdminProductForm.jsx'
 
 export default function App() {
   const [loading, setLoading] = useState(true)
   const location = useLocation()
+  const isAdminRoute = location.pathname.startsWith('/admin')
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1400)
     return () => clearTimeout(timer)
   }, [])
 
+  if (isAdminRoute) {
+    return (
+      <>
+        <ScrollToTop />
+        <Routes location={location} key={location.pathname}>
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+          <Route path="/admin/products/new" element={<ProtectedRoute><AdminProductForm /></ProtectedRoute>} />
+          <Route path="/admin/products/:id/edit" element={<ProtectedRoute><AdminProductForm /></ProtectedRoute>} />
+        </Routes>
+      </>
+    )
+  }
+
   return (
     <>
       <Loader show={loading} />
       <ScrollToTop />
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[110] focus:bg-ink focus:text-white focus:px-5 focus:py-3 focus:eyebrow !focus:text-[0.7rem]">
+        Skip to content
+      </a>
       <Navbar />
       <CartDrawer />
       <WishlistDrawer />
       <WhatsAppButton />
-      <main>
+      <main id="main-content">
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
@@ -50,6 +71,7 @@ export default function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/return-policy" element={<ReturnPolicy />} />
             <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path="/terms-and-conditions" element={<TermsConditions />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AnimatePresence>
