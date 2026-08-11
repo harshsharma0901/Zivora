@@ -2,9 +2,30 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext.jsx'
 import { formatPrice } from '../data/products.js'
+import { whatsappLink } from '../config.js'
 
 export default function CartDrawer() {
-  const { items, isOpen, setIsOpen, removeItem, updateQty, subtotal } = useCart()
+  const { items, isOpen, setIsOpen, removeItem, updateQty, subtotal, clearCart } = useCart()
+
+  const handleCheckout = () => {
+    if (items.length === 0) return
+
+    const lines = items.map(
+      (item) => `• ${item.name} (x${item.qty}) — ${formatPrice(item.price * item.qty)}`
+    )
+    const message = [
+      'Hi ZIVORA! I would like to order:',
+      '',
+      ...lines,
+      '',
+      `Subtotal: ${formatPrice(subtotal)}`,
+      '',
+      'Please confirm availability and next steps.'
+    ].join('\n')
+
+    window.open(whatsappLink(message), '_blank', 'noopener,noreferrer')
+    setIsOpen(false)
+  }
 
   return (
     <AnimatePresence>
@@ -74,7 +95,7 @@ export default function CartDrawer() {
                 </div>
                 <p className="text-xs text-ink/40">Shipping and taxes calculated at checkout.</p>
                 <button
-                  onClick={() => setIsOpen(false)}
+                  onClick={handleCheckout}
                   className="w-full bg-ink text-white py-4 eyebrow !text-[0.72rem] hover:bg-rosegold transition-colors"
                 >
                   Proceed to Checkout
