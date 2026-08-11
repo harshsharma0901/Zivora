@@ -2,12 +2,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useWishlist } from '../context/WishlistContext.jsx'
 import { useCart } from '../context/CartContext.jsx'
-import { formatPrice, getProductById } from '../data/products.js'
+import { formatPrice } from '../data/products.js'
 
 export default function WishlistDrawer() {
   const { items, isOpen, setIsOpen, removeItem } = useWishlist()
   const { addItem } = useCart()
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -34,7 +33,6 @@ export default function WishlistDrawer() {
                 </svg>
               </button>
             </div>
-
             <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
               {items.length === 0 && (
                 <p className="text-ink/50 text-sm pt-10 text-center">Nothing saved yet. Tap the heart on any piece to save it here.</p>
@@ -48,8 +46,7 @@ export default function WishlistDrawer() {
                     <div className="flex items-center gap-4 mt-2">
                       <button
                         onClick={() => {
-                          const product = getProductById(item.id)
-                          if (product) addItem(product)
+                          addItem({ id: item.id, name: item.name, price: item.price, images: [item.image] })
                         }}
                         className="text-xs eyebrow !text-[0.62rem] text-ink hover:text-rosegold"
                       >
@@ -63,7 +60,6 @@ export default function WishlistDrawer() {
                 </div>
               ))}
             </div>
-
             {items.length > 0 && (
               <div className="px-6 py-6 border-t border-beige">
                 <Link
