@@ -2,6 +2,8 @@ import { motion } from 'framer-motion'
 import SEO from '../components/SEO.jsx'
 import PageTransition from '../components/PageTransition.jsx'
 
+const STORAGE = 'https://ltfdjwhrjnutqtbwfats.supabase.co/storage/v1/object/public/product-images'
+
 const pillars = [
   {
     title: 'Premium Quality',
@@ -17,7 +19,7 @@ const pillars = [
   },
   {
     title: 'Affordable Luxury',
-    text: "Luxury shouldn’t require a compromise on honesty. We keep our pricing transparent and fair, so a premium piece is a genuine possibility, not just an aspiration."
+    text: "Luxury shouldn't require a compromise on honesty. We keep our pricing transparent and fair, so a premium piece is a genuine possibility, not just an aspiration."
   },
   {
     title: 'Fast Shipping',
@@ -29,7 +31,7 @@ const pillars = [
   },
   {
     title: 'Customer Satisfaction',
-    text: "From the first message to the piece arriving at your door, we treat every customer the way we’d want to be treated — clearly, honestly, and with care."
+    text: "From the first message to the piece arriving at your door, we treat every customer the way we'd want to be treated — clearly, honestly, and with care."
   }
 ]
 
@@ -49,8 +51,8 @@ export default function About() {
             <h1 className="font-display text-5xl md:text-6xl mb-6">Shine Beyond Ordinary</h1>
             <p className="text-ink/60 leading-relaxed mb-4">
               ZIVORA was founded on a simple idea: premium jewellery should feel personal, look timeless, and be genuinely
-              within reach. We design each piece to sit comfortably between fashion and fine jewellery — elevated enough for
-              an occasion, versatile enough for every day.
+              within reach. We design each piece to sit comfortably between everyday wear and a special occasion — elevated
+              enough to make a moment, versatile enough for every day.
             </p>
             <p className="text-ink/60 leading-relaxed">
               We call it affordable luxury — modern craftsmanship, honest pricing, and an elegant shopping experience from
@@ -64,8 +66,8 @@ export default function About() {
             transition={{ delay: 0.15, duration: 0.7 }}
           >
             <img
-              src="https://images.unsplash.com/photo-1602752275849-8f38b437b3fb?auto=format&fit=crop&w=1000&q=80"
-              alt="ZIVORA jewellery, hand-finished and ready for a final quality check"
+              src={`${STORAGE}/gold-panther-ring.jpg`}
+              alt="ZIVORA jewellery, ready to shine"
               loading="lazy"
               width="1000"
               height="750"
@@ -136,8 +138,8 @@ export default function About() {
             transition={{ duration: 0.7 }}
           >
             <img
-              src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1000&q=80"
-              alt="Customer trying on a ZIVORA ring, part of the ZIVORA elegant shopping experience"
+              src={`${STORAGE}/gold-flower-kada-a.jpg`}
+              alt="Customer trying on a ZIVORA piece"
               loading="lazy"
               width="1000"
               height="750"
