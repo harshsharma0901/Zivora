@@ -7,11 +7,12 @@ import Newsletter from '../components/Newsletter.jsx'
 import Reviews, { SectionIntro } from '../components/Reviews.jsx'
 import InstagramGallery from '../components/InstagramGallery.jsx'
 import Button from '../components/Button.jsx'
-import { collections, products } from '../data/products.js'
-
-const bestSellers = products.filter((p) => p.bestSeller)
+import { collections } from '../data/products.js'
+import { useProducts } from '../hooks/useProducts.js'
 
 export default function Home() {
+  const { products } = useProducts()
+  const bestSellers = products.slice(0, 4)
   return (
     <PageTransition>
       <SEO
