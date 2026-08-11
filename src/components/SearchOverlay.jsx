@@ -1,26 +1,25 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { products, formatPrice } from '../data/products.js'
+import { formatPrice } from '../data/products.js'
+import { useProducts } from '../hooks/useProducts.js'
 
 export default function SearchOverlay({ open, onClose }) {
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
+  const { products } = useProducts()
 
   useEffect(() => {
     if (!open) setQuery('')
   }, [open])
-
   useEffect(() => {
     const onKey = (e) => e.key === 'Escape' && onClose()
     if (open) window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [open, onClose])
-
   const results = query.trim()
     ? products.filter((p) => p.name.toLowerCase().includes(query.toLowerCase()) || p.category.toLowerCase().includes(query.toLowerCase())).slice(0, 6)
     : []
-
   return (
     <AnimatePresence>
       {open && (
@@ -53,7 +52,6 @@ export default function SearchOverlay({ open, onClose }) {
                 </svg>
               </button>
             </div>
-
             <div className="mt-6 space-y-3 max-h-[50vh] overflow-y-auto">
               {results.map((p) => (
                 <button
