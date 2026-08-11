@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import SEO from '../components/SEO.jsx'
 import PageTransition from '../components/PageTransition.jsx'
 import ProductCard from '../components/ProductCard.jsx'
-import { products } from '../data/products.js'
+import { useProducts } from '../hooks/useProducts.js'
 
 const categories = ['All', 'Rings', 'Necklaces', 'Earrings', 'Bracelets']
 const sortOptions = [
@@ -14,6 +14,7 @@ const sortOptions = [
 ]
 
 export default function Shop() {
+  const { products, loading, error } = useProducts()
   const [category, setCategory] = useState('All')
   const [sort, setSort] = useState('featured')
 
@@ -22,9 +23,9 @@ export default function Shop() {
     list = [...list]
     if (sort === 'price-asc') list.sort((a, b) => a.price - b.price)
     if (sort === 'price-desc') list.sort((a, b) => b.price - a.price)
-    if (sort === 'rating') list.sort((a, b) => b.rating - a.rating)
+    if (sort === 'rating') list.sort((a, b) => (b.rating || 0) - (a.rating || 0))
     return list
-  }, [category, sort])
+  }, [category, sort, products])
 
   return (
     <PageTransition>
@@ -68,7 +69,11 @@ export default function Shop() {
             </select>
           </div>
 
-          {filtered.length === 0 ? (
+          {loading ? (
+            <p className="text-center text-ink/50 py-20">Loading...</p>
+          ) : error ? (
+            <p className="text-center text-ink/50 py-20">Could not load products. Please try again later.</p>
+          ) : filtered.length === 0 ? (
             <p className="text-center text-ink/50 py-20">No pieces match this filter yet.</p>
           ) : (
             <motion.div layout className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
