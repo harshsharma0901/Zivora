@@ -5,21 +5,31 @@ import SEO from '../components/SEO.jsx'
 import PageTransition from '../components/PageTransition.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import NotFound from './NotFound.jsx'
-import { getProductById, getRelatedProducts, formatPrice } from '../data/products.js'
+import { formatPrice } from '../data/products.js'
+import { useProduct } from '../hooks/useProducts.js'
 import { useCart } from '../context/CartContext.jsx'
 import { useWishlist } from '../context/WishlistContext.jsx'
 import { SITE_URL } from '../config.js'
 
 export default function ProductDetails() {
   const { id } = useParams()
-  const product = getProductById(id)
-  if (!product) return <NotFound />
+  const { product, related, loading, error } = useProduct(id)
 
   const [activeImg, setActiveImg] = useState(0)
   const [qty, setQty] = useState(1)
   const { addItem } = useCart()
   const { toggleItem, isWishlisted } = useWishlist()
-  const related = getRelatedProducts(product)
+
+  if (loading) {
+    return (
+      <PageTransition>
+        <div className="pt-40 pb-20 text-center text-ink/50">Loading...</div>
+      </PageTransition>
+    )
+  }
+
+  if (error || !product) return <NotFound />
+
   const wished = isWishlisted(product.id)
 
   const productJsonLd = {
@@ -90,12 +100,12 @@ export default function ProductDetails() {
               <div className="flex items-center gap-2 mb-6">
                 <div className="flex gap-1" aria-hidden="true">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill={i < Math.round(product.rating) ? '#B76E79' : '#e5dfda'}>
+                    <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill={i < Math.round(product.rating || 0) ? '#B76E79' : '#e5dfda'}>
                       <path d="M12 2l3.1 6.6 7.2.9-5.3 5 1.5 7.1L12 18l-6.5 3.6 1.5-7.1-5.3-5 7.2-.9L12 2z" />
                     </svg>
                   ))}
                 </div>
-                <span className="text-xs text-ink/50">{product.rating} ({product.reviewsCount} reviews)</span>
+                <span className="text-xs text-ink/50">{product.rating || '—'} ({product.reviewsCount || 0} reviews)</span>
               </div>
 
               <div className="flex items-center gap-3 mb-6">
@@ -106,7 +116,7 @@ export default function ProductDetails() {
               <p className="text-ink/60 leading-relaxed mb-8">{product.description}</p>
 
               <ul className="space-y-2 mb-8">
-                {product.details.map((d, i) => (
+                {(product.details || []).map((d, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-ink/70">
                     <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-rosegold flex-shrink-0" />
                     {d}
