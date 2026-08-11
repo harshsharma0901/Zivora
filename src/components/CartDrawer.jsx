@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext.jsx'
 import { formatPrice } from '../data/products.js'
-import { whatsappLink } from '../config.js'
+import { whatsappLink, SITE_URL } from '../config.js'
 
 export default function CartDrawer() {
   const { items, isOpen, setIsOpen, removeItem, updateQty, subtotal, clearCart } = useCart()
@@ -11,7 +11,8 @@ export default function CartDrawer() {
     if (items.length === 0) return
 
     const lines = items.map(
-      (item) => `• ${item.name} (x${item.qty}) — ${formatPrice(item.price * item.qty)}`
+      (item) =>
+        `• ${item.name} (x${item.qty}) — ${formatPrice(item.price * item.qty)}\n  Photo: ${SITE_URL}/product/${item.id}`
     )
     const message = [
       'Hi ZIVORA! I would like to order:',
