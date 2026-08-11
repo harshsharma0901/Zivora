@@ -23,7 +23,7 @@ export default function Home() {
 
       <Hero />
       <FeaturedCollections />
-      <BestSellers />
+      <BestSellers products={bestSellers} />
       <WhyChoose />
       <Reviews />
       <InstagramGallery />
@@ -138,7 +138,7 @@ function FeaturedCollections() {
   )
 }
 
-function BestSellers() {
+function BestSellers({ products: bestSellers }) {
   return (
     <section className="py-28 bg-beige">
       <div className="container-x">
