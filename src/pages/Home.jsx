@@ -16,7 +16,7 @@ export default function Home() {
     <PageTransition>
       <SEO
         title="Home"
-        description="ZIVORA — luxury fine jewellery crafted to shine beyond ordinary. Explore rings, necklaces, earrings and bracelets."
+        description="ZIVORA — affordable fashion jewellery crafted to shine beyond ordinary. Explore rings, necklaces, earrings and bracelets."
         path="/"
       />
 
@@ -71,7 +71,7 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 0.6 }}
           >
-            Fine jewellery hand-finished in small batches, designed to be worn today and passed down tomorrow.
+            Premium fashion jewellery, finished with care and priced to be worn every day.
           </motion.p>
 
           <motion.div
@@ -158,9 +158,9 @@ function BestSellers() {
 }
 
 const pillars = [
-  { title: 'Certified Materials', desc: 'Every diamond and gemstone is certified and ethically sourced, with full traceability.', icon: 'gem' },
-  { title: 'Hand-Finished', desc: 'Each piece passes through our artisans’ hands for final polish, setting and inspection.', icon: 'hand' },
-  { title: 'Lifetime Care', desc: 'Complimentary resizing, cleaning and inspection for as long as you own the piece.', icon: 'shield' },
+  { title: 'Premium Plating', desc: 'Every piece is stainless steel with premium gold plating — tarnish-resistant, nickel-free, and built to last.', icon: 'gem' },
+  { title: 'Hand-Finished', desc: 'Each piece passes through final polish, setting and inspection before it ships.', icon: 'hand' },
+  { title: 'Lifetime Care', desc: 'Reach out anytime for cleaning tips, sizing help or a quick fix — we\u2019re here for as long as you own the piece.', icon: 'shield' },
   { title: 'Insured Shipping', desc: 'Every order ships fully insured, discreetly packaged, with signature-on-delivery.', icon: 'box' }
 ]
 
