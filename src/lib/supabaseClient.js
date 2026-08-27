@@ -35,6 +35,7 @@ export function mapProductRow(row) {
     material: row.material || '',
     description: row.description || '',
     details: row.details || [],
+    inStock: row.in_stock !== false,
     images: row.images && row.images.length ? row.images : ['https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=900&h=1100&q=80']
   }
 }
@@ -53,6 +54,7 @@ export function toProductRow(form) {
     material: form.material || '',
     description: form.description || '',
     details: form.details || [],
+    in_stock: form.inStock !== false,
     images: form.images || []
   }
 }
