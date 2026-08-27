@@ -31,6 +31,7 @@ export default function ProductDetails() {
   if (error || !product) return <NotFound />
 
   const wished = isWishlisted(product.id)
+  const outOfStock = product.inStock === false
 
   const productJsonLd = {
     '@context': 'https://schema.org',
@@ -51,7 +52,7 @@ export default function ProductDetails() {
       url: `${SITE_URL}/product/${product.id}`,
       priceCurrency: 'INR',
       price: product.price,
-      availability: 'https://schema.org/InStock'
+      availability: outOfStock ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock'
     }
   }
 
@@ -76,7 +77,7 @@ export default function ProductDetails() {
                 transition={{ duration: 0.6 }}
                 key={activeImg}
               >
-                <img src={product.images[activeImg]} alt={`${product.name} — ${product.material}`} decoding="async" className="w-full h-full object-cover" />
+                <img src={product.images[activeImg]} alt={`${product.name} — ${product.material}`} decoding="async" className={`w-full h-full object-cover ${outOfStock ? 'grayscale opacity-70' : ''}`} />
               </motion.div>
               <div className="flex gap-3 mt-4">
                 {product.images.map((img, idx) => (
@@ -111,6 +112,9 @@ export default function ProductDetails() {
               <div className="flex items-center gap-3 mb-6">
                 <span className="font-display text-3xl text-rosegold">{formatPrice(product.price)}</span>
                 {product.compareAt && <span className="text-ink/40 line-through">{formatPrice(product.compareAt)}</span>}
+                {outOfStock && (
+                  <span className="text-xs font-medium text-white bg-ink/70 px-2 py-1 rounded-sm eyebrow !text-[0.6rem]">Out of Stock</span>
+                )}
               </div>
 
               <p className="text-ink/60 leading-relaxed mb-8">{product.description}</p>
@@ -127,18 +131,21 @@ export default function ProductDetails() {
               <div className="flex items-center gap-4 mb-8">
                 <span className="text-sm text-ink/60">Quantity</span>
                 <div className="flex items-center gap-3">
-                  <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-8 h-8 border border-ink/20 rounded-full hover:border-rosegold">−</button>
+                  <button disabled={outOfStock} onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-8 h-8 border border-ink/20 rounded-full hover:border-rosegold disabled:opacity-30 disabled:cursor-not-allowed">−</button>
                   <span className="w-6 text-center">{qty}</span>
-                  <button onClick={() => setQty((q) => q + 1)} className="w-8 h-8 border border-ink/20 rounded-full hover:border-rosegold">+</button>
+                  <button disabled={outOfStock} onClick={() => setQty((q) => q + 1)} className="w-8 h-8 border border-ink/20 rounded-full hover:border-rosegold disabled:opacity-30 disabled:cursor-not-allowed">+</button>
                 </div>
               </div>
 
               <div className="flex gap-4">
                 <button
                   onClick={() => addItem(product, qty)}
-                  className="glint flex-1 bg-ink text-white py-4 eyebrow !text-[0.7rem] hover:bg-rosegold transition-colors"
+                  disabled={outOfStock}
+                  className={`glint flex-1 py-4 eyebrow !text-[0.7rem] transition-colors ${
+                    outOfStock ? 'bg-ink/30 text-white cursor-not-allowed' : 'bg-ink text-white hover:bg-rosegold'
+                  }`}
                 >
-                  Add to Bag
+                  {outOfStock ? 'Out of Stock' : 'Add to Bag'}
                 </button>
                 <button
                   onClick={() => toggleItem(product)}
