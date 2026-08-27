@@ -8,6 +8,7 @@ export default function ProductCard({ product, index = 0 }) {
   const { toggleItem, isWishlisted } = useWishlist()
   const { addItem } = useCart()
   const wished = isWishlisted(product.id)
+  const outOfStock = product.inStock === false
 
   return (
     <motion.div
@@ -24,7 +25,7 @@ export default function ProductCard({ product, index = 0 }) {
             alt={`${product.name} — ${product.material}`}
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${outOfStock ? 'grayscale opacity-60' : ''}`}
           />
         </Link>
 
@@ -38,19 +39,32 @@ export default function ProductCard({ product, index = 0 }) {
           </svg>
         </button>
 
-        {product.bestSeller && (
+        {outOfStock ? (
+          <span className="absolute top-3 left-3 eyebrow !text-[0.58rem] bg-ink/70 text-white px-2 py-1 rounded-sm">
+            Out of Stock
+          </span>
+        ) : product.bestSeller ? (
           <span className="absolute top-3 left-3 eyebrow !text-[0.58rem] bg-ink text-white px-2 py-1 rounded-sm">
             Best Seller
           </span>
-        )}
+        ) : null}
 
         <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-400 ease-facet">
-          <button
-            onClick={() => addItem(product)}
-            className="glint w-full bg-ink text-white py-3 eyebrow !text-[0.65rem] hover:bg-rosegold transition-colors"
-          >
-            Quick Add
-          </button>
+          {outOfStock ? (
+            <button
+              disabled
+              className="w-full bg-ink/40 text-white py-3 eyebrow !text-[0.65rem] cursor-not-allowed"
+            >
+              Out of Stock
+            </button>
+          ) : (
+            <button
+              onClick={() => addItem(product)}
+              className="glint w-full bg-ink text-white py-3 eyebrow !text-[0.65rem] hover:bg-rosegold transition-colors"
+            >
+              Quick Add
+            </button>
+          )}
         </div>
       </div>
 
