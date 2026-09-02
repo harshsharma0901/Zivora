@@ -7,5 +7,15 @@ export const INSTAGRAM_URL = import.meta.env.VITE_INSTAGRAM_URL || 'https://inst
 export const FACEBOOK_URL = import.meta.env.VITE_FACEBOOK_URL || 'https://facebook.com/shipzivora'
 export const BUSINESS_LOCATION = 'Ghaziabad, Uttar Pradesh, India'
 
+export const BANK_DETAILS = {
+  accountName: 'ZIVORA',
+  proprietor: 'HARSH SHARMA',
+  accountType: 'Current Account',
+  accountNumber: '250613227062',
+  bank: 'IndusInd Bank',
+  branch: 'Ghaziabad, RDC, Raj Nagar',
+  ifsc: 'INDB0000171'
+}
+
 export const whatsappLink = (message) =>
   `https://wa.me/${WHATSAPP_NUMBER}${message ? `?text=${encodeURIComponent(message)}` : ''}`
