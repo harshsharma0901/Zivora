@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext.jsx'
 import { formatPrice } from '../data/products.js'
 import { whatsappLink, SITE_URL, BANK_DETAILS } from '../config.js'
 
-const emptyForm = { name: '', phone: '', email: '', address: '', pincode: '', notes: '', payment: 'Bank Transfer / UPI' }
+const emptyForm = { name: '', phone: '', email: '', address: '', pincode: '', notes: '', payment: 'UPI' }
 
 export default function CartDrawer() {
   const { items, isOpen, setIsOpen, removeItem, updateQty, subtotal, clearCart } = useCart()
@@ -43,19 +43,6 @@ export default function CartDrawer() {
 
   const handlePlaceOrder = (e) => {
     e.preventDefault()
-    const bankLines =
-      form.payment === 'Bank Transfer / UPI'
-        ? [
-            '',
-            '--- Pay via Bank Transfer ---',
-            `Account Name: ${BANK_DETAILS.accountName}`,
-            `Account Number: ${BANK_DETAILS.accountNumber}`,
-            `IFSC: ${BANK_DETAILS.ifsc}`,
-            `Bank: ${BANK_DETAILS.bank}, ${BANK_DETAILS.branch}`,
-            'Please share the payment screenshot here on WhatsApp after transferring.'
-          ]
-        : []
-
     const message = [
       'Hi ZIVORA! I would like to place an order:',
       '',
@@ -71,7 +58,13 @@ export default function CartDrawer() {
       `Pincode: ${form.pincode}`,
       form.notes ? `Notes: ${form.notes}` : null,
       `Payment Method: ${form.payment}`,
-      ...bankLines,
+      '',
+      '--- Pay via ---',
+      `Account Name: ${BANK_DETAILS.accountName}`,
+      `Account Number: ${BANK_DETAILS.accountNumber}`,
+      `IFSC: ${BANK_DETAILS.ifsc}`,
+      `Bank: ${BANK_DETAILS.bank}, ${BANK_DETAILS.branch}`,
+      'Please share the payment screenshot here on WhatsApp after transferring.',
       '',
       'Please confirm and let me know the next steps.'
     ]
@@ -197,7 +190,7 @@ export default function CartDrawer() {
                 <div>
                   <label className="text-xs eyebrow !text-ink/50 mb-2 block">Payment Method</label>
                   <div className="flex gap-3">
-                    {['Bank Transfer / UPI', 'Cash on Delivery'].map((opt) => (
+                    {['UPI', 'Netbanking'].map((opt) => (
                       <label
                         key={opt}
                         className={`flex-1 text-center text-sm border rounded-md py-2.5 cursor-pointer transition-colors ${
@@ -217,15 +210,13 @@ export default function CartDrawer() {
                     ))}
                   </div>
 
-                  {form.payment === 'Bank Transfer / UPI' && (
-                    <div className="mt-3 bg-beige rounded-md p-4 text-xs text-ink/70 space-y-1">
-                      <p className="eyebrow !text-[0.6rem] text-ink/50 mb-2">Transfer to this account, then send us the screenshot on WhatsApp</p>
-                      <p><span className="text-ink/50">Account Name:</span> {BANK_DETAILS.accountName}</p>
-                      <p><span className="text-ink/50">Account Number:</span> {BANK_DETAILS.accountNumber}</p>
-                      <p><span className="text-ink/50">IFSC:</span> {BANK_DETAILS.ifsc}</p>
-                      <p><span className="text-ink/50">Bank:</span> {BANK_DETAILS.bank}, {BANK_DETAILS.branch}</p>
-                    </div>
-                  )}
+                  <div className="mt-3 bg-beige rounded-md p-4 text-xs text-ink/70 space-y-1">
+                    <p className="eyebrow !text-[0.6rem] text-ink/50 mb-2">Transfer to this account, then send us the screenshot on WhatsApp</p>
+                    <p><span className="text-ink/50">Account Name:</span> {BANK_DETAILS.accountName}</p>
+                    <p><span className="text-ink/50">Account Number:</span> {BANK_DETAILS.accountNumber}</p>
+                    <p><span className="text-ink/50">IFSC:</span> {BANK_DETAILS.ifsc}</p>
+                    <p><span className="text-ink/50">Bank:</span> {BANK_DETAILS.bank}, {BANK_DETAILS.branch}</p>
+                  </div>
                 </div>
 
                 <div className="pt-2 border-t border-beige">
